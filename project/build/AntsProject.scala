@@ -10,9 +10,15 @@ class AntsProject(info: ProjectInfo) extends DefaultSpdeProject(info) with Assem
   val javaNet = "Java.Net" at "http://download.java.net/maven/2"
   val scalaToolsSnapshots = ScalaToolsSnapshots
   
-  val akkaCore = "se.scalablesolutions.akka" %% "akka-core" % "0.9"
-
   override def spdeSourcePath = mainSourcePath / "spde"
+  override def renderInfo = (100, 100, Renderers.JAVA2D :: Nil)
+  override def proguardOptions = "-keep class org.multiverse.api.GlobalStmInstance" :: super.proguardOptions
+  override def ivyXML = 
+      <dependencies>
+        <dependency org="se.scalablesolutions.akka" name="akka-core_2.8.0.Beta1" rev="0.9">
+          <exclude module="multiverse-core"/>
+        </dependency>
+      </dependencies>
 }
 
 trait AssemblyProject extends BasicScalaProject {
