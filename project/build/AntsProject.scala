@@ -12,11 +12,17 @@ class AntsProject(info: ProjectInfo) extends DefaultSpdeProject(info) with Assem
   
   override def spdeSourcePath = mainSourcePath / "spde"
   override def renderInfo = (100, 100, Renderers.JAVA2D :: Nil)
-  override def proguardOptions = "-keep class org.multiverse.api.GlobalStmInstance" :: super.proguardOptions
+  override def proguardOptions =
+    "-keep class org.multiverse.api.GlobalStmInstance" :: 
+    "-keep class org.multiverse.stms.alpha.AlphaStm { public static org.multiverse.stms.alpha.AlphaStm createFast(); }" ::
+    "-keep class se.scalablesolutions.akka.config.Config" ::
+    "-keep class scala.collection.IndexedSeqOptimized" ::
+    super.proguardOptions
   override def ivyXML = 
       <dependencies>
         <dependency org="se.scalablesolutions.akka" name="akka-core_2.8.0.Beta1" rev="0.9">
           <exclude module="multiverse-core"/>
+          <exclude module="multiverse-alpha-unborn"/>
         </dependency>
       </dependencies>
 }
